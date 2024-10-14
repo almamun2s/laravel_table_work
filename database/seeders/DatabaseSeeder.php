@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Account::factory(10)->create();
         \App\Models\Offer::factory(10)->create();
         \App\Models\Phone::factory(10)->create();
+        \App\Models\Device::factory(10)->create();
     }
 }
