@@ -33,6 +33,7 @@
                                         <th>Account Name</th>
                                         <th>Offer Name</th>
                                         <th>Device Name</th>
+                                        <th>Device Add</th>
                                         <th>Offers</th>
                                         <th>Offer Add</th>
                                         <th>Account Add</th>
@@ -63,7 +64,10 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="mobile_name">Samsung</td>
+                                        <td class="device_name">Samsung</td>
+                                        <td class="device_add"><span class="btn btn-sm add_device"
+                                                style="background-color: pink;" onclick="addDevice(this)">Add
+                                                Device</span></td>
                                         <td class="offer">1</td>
                                         <td class="offer_add"><span class="btn btn-primary btn-sm add_offer"
                                                 onclick="addOffer(this)" data-offer="1">Add
@@ -89,6 +93,62 @@
     </div> <!-- end row -->
     <script>
         let serialNo = 1;
+
+        function addDevice(element) {
+            let tr = element.parentElement.parentElement;
+            let deviceTr = `
+                <tr class="deviceTr">
+                    <td class="device_name">Samsung</td>
+                </tr>
+            `;
+
+            tr.insertAdjacentHTML('afterend', deviceTr);
+
+
+
+            if (tr.classList.contains('offerTr')) {
+                let mainRow = findPrevMainRow(tr);
+                let accRow = findPrevAccRow(tr);
+
+                if (accRow) {
+                    increaseRawspanAccName(accRow);
+                    increaseRawspanOffer(accRow);
+                    increaseRawspanOfferAdd(accRow);
+                } else {
+                    increaseRawspanAccName(mainRow);
+                    increaseRawspanOffer(mainRow);
+                    increaseRawspanOfferAdd(mainRow);
+                }
+
+                increaseRawspanSlNo(mainRow);
+                increaseRawspanUsername(mainRow);
+                increaseRawspanAccAdd(mainRow);
+                increaseRawspanUserAdd(mainRow);
+
+            } else if (tr.classList.contains('accountTr')) {
+                let mainRow = findPrevMainRow(tr);
+                increaseRawspanSlNo(mainRow);
+                increaseRawspanUsername(mainRow);
+                increaseRawspanAccName(tr);
+                increaseRawspanOffer(tr);
+                increaseRawspanOfferAdd(tr);
+                increaseRawspanAccAdd(mainRow);
+                increaseRawspanUserAdd(mainRow);
+            } else {
+                increaseRawspanSlNo(tr);
+                increaseRawspanUsername(tr);
+                increaseRawspanAccName(tr);
+                increaseRawspanOffer(tr);
+                increaseRawspanOfferAdd(tr);
+                increaseRawspanAccAdd(tr);
+                increaseRawspanUserAdd(tr);
+
+            }
+            increaseRawspanOfferName(tr);
+            increaseRawspanDeviceAdd(tr);
+
+        }
+
         // Add Offer 
         function addOffer(element) {
 
@@ -102,7 +162,8 @@
                             @endforeach
                         </select>    
                     </td>
-                    <td class="mobile_name">Samsung <span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
+                    <td class="device_name">Samsung</td>
+                    <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span><span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
                 </tr>
             `;
 
@@ -111,7 +172,18 @@
             element.dataset.offer = newOfferValue;
 
             tr.querySelector('.offer').innerHTML = newOfferValue;
-            tr.insertAdjacentHTML('afterend', offerTr);
+
+            let insertAfterTr = findNextNonDeviceTr(tr);
+
+            if (insertAfterTr) {
+                if (insertAfterTr.classList.contains('main_row')) {
+                    insertAfterTr.insertAdjacentHTML('beforebegin', offerTr);
+                } else {
+                    insertAfterTr.insertAdjacentHTML('afterend', offerTr);
+                }
+            } else {
+                tr.parentElement.insertAdjacentHTML('beforeend', offerTr);
+            }
 
             if (tr.classList.contains('accountTr')) {
                 increaseRawspanAccName(tr);
@@ -153,7 +225,8 @@
                             @endforeach
                         </select>     
                     </td>
-                    <td class="mobile_name">Samsung</td>
+                    <td class="device_name">Samsung</td>
+                    <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer">1</td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
                 </tr>
@@ -205,7 +278,8 @@
                             @endforeach
                         </select> 
                     </td>
-                    <td class="mobile_name">Samsung</td>
+                    <td class="device_name">Samsung</td>
+                    <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer">1</td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span></td>
                     <td class="account_add"><span class="btn btn-secondary btn-sm" onclick="addAccount(this)">Add Account</span><span class="btn btn-danger btn-sm" onclick="deleteUser(this)"> Delete User</span></td>
@@ -293,11 +367,24 @@
             }
         }
 
+        // Find next non device tr
+        function findNextNonDeviceTr(currentTr) {
+            let nextTr = currentTr.nextElementSibling;
+
+            while (nextTr && nextTr.classList.contains('deviceTr')) {
+
+                nextTr = nextTr.nextElementSibling;
+            }
+            console.log(nextTr);
+            return nextTr;
+        }
+
         // Finding Some tr
         function findNextNonOfferOrNonAccTr(currentTr) {
             let nextTr = currentTr.nextElementSibling;
 
-            while (nextTr && (nextTr.classList.contains('offerTr') || nextTr.classList.contains('accountTr'))) {
+            while (nextTr && (nextTr.classList.contains('offerTr') || nextTr.classList.contains('accountTr') || nextTr
+                    .classList.contains('deviceTr'))) {
                 nextTr = nextTr.nextElementSibling;
             }
             return nextTr;
@@ -368,6 +455,18 @@
         function increaseRawspanAccName(element) {
             let account_name = element.querySelector('.account_name');
             account_name.rowSpan++;
+        }
+
+        // Functions for increasing rowspan for Offer Name
+        function increaseRawspanOfferName(element) {
+            let offer_name = element.querySelector('.offer_name');
+            offer_name.rowSpan++;
+        }
+
+        // Functions for increasing rowspan for Offer Name
+        function increaseRawspanDeviceAdd(element) {
+            let device_add = element.querySelector('.device_add');
+            device_add.rowSpan++;
         }
 
         // Functions for increasing rowspan for Offer
