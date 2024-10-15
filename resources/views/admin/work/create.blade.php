@@ -74,9 +74,9 @@
                                         <td class="device_add"><span class="btn btn-sm add_device"
                                                 style="background-color: pink;" onclick="addDevice(this)">Add
                                                 Device</span></td>
-                                        <td class="offer">1</td>
+                                        <td class="offer" data-offer="1">1</td>
                                         <td class="offer_add"><span class="btn btn-primary btn-sm add_offer"
-                                                onclick="addOffer(this)" data-offer="1">Add
+                                                onclick="addOffer(this)">Add
                                                 Offer</span></td>
                                         <td class="account_add"><span class="btn btn-secondary btn-sm"
                                                 onclick="addAccount(this)">Add
@@ -109,13 +109,13 @@
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
-                        </select>    
+                        </select>
+                        <span class="btn btn-danger btn-sm" onclick="deleteDevice(this)">Delete Device</span>
                     </td>
                 </tr>
             `;
 
             tr.insertAdjacentHTML('afterend', deviceTr);
-
 
 
             if (tr.classList.contains('offerTr')) {
@@ -126,10 +126,14 @@
                     increaseRawspanAccName(accRow);
                     increaseRawspanOffer(accRow);
                     increaseRawspanOfferAdd(accRow);
+
+                    var offerElement = accRow.querySelector('.offer');
                 } else {
                     increaseRawspanAccName(mainRow);
                     increaseRawspanOffer(mainRow);
                     increaseRawspanOfferAdd(mainRow);
+
+                    var offerElement = mainRow.querySelector('.offer');
                 }
 
                 increaseRawspanSlNo(mainRow);
@@ -146,6 +150,8 @@
                 increaseRawspanOfferAdd(tr);
                 increaseRawspanAccAdd(mainRow);
                 increaseRawspanUserAdd(mainRow);
+
+                var offerElement = tr.querySelector('.offer');
             } else {
                 increaseRawspanSlNo(tr);
                 increaseRawspanUsername(tr);
@@ -155,9 +161,15 @@
                 increaseRawspanAccAdd(tr);
                 increaseRawspanUserAdd(tr);
 
+                var offerElement = tr.querySelector('.offer');
             }
             increaseRawspanOfferName(tr);
             increaseRawspanDeviceAdd(tr);
+
+            var offerValue = offerElement.dataset.offer;
+            var newOfferValue = parseInt(offerValue) + 1;
+            offerElement.dataset.offer = newOfferValue;
+            offerElement.innerHTML = newOfferValue;
 
         }
 
@@ -184,12 +196,6 @@
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span><span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
                 </tr>
             `;
-
-            var offerValue = element.dataset.offer;
-            var newOfferValue = parseInt(offerValue) + 1;
-            element.dataset.offer = newOfferValue;
-
-            tr.querySelector('.offer').innerHTML = newOfferValue;
 
             let insertAfterTr = findNextNonDeviceTr(tr);
 
@@ -253,8 +259,8 @@
                         </select>    
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
-                    <td class="offer">1</td>
-                    <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
+                    <td class="offer" data-offer="1">1</td>
+                    <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
                 </tr>
             `;
             let tr = element.parentElement.parentElement;
@@ -312,8 +318,8 @@
                         </select>    
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
-                    <td class="offer">1</td>
-                    <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span></td>
+                    <td class="offer" data-offer="1">1</td>
+                    <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span></td>
                     <td class="account_add"><span class="btn btn-secondary btn-sm" onclick="addAccount(this)">Add Account</span><span class="btn btn-danger btn-sm" onclick="deleteUser(this)"> Delete User</span></td>
                 </tr>
             `;
@@ -321,6 +327,11 @@
             let workTableBody = document.querySelector('#work_table tbody');
             workTableBody.insertAdjacentHTML('beforeend', userTr);
             element.parentElement.rowSpan = element.parentElement.rowSpan + 1;
+        }
+
+        // Deleting Device
+        function deleteDevice(element) {
+
         }
 
         // Deleting Offer
