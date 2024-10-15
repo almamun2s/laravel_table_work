@@ -241,6 +241,12 @@
                 increaseRawspanAccAdd(tr);
                 increaseRawspanUserAdd(tr);
             }
+
+            var offerElement = tr.querySelector('.offer');
+            var offerValue = offerElement.dataset.offer;
+            var newOfferValue = parseInt(offerValue) + 1;
+            offerElement.dataset.offer = newOfferValue;
+            offerElement.innerHTML = newOfferValue;
         }
 
         // Add Account
@@ -351,7 +357,15 @@
                 let mainTr = findPrevMainRow(element.parentElement.parentElement);
                 let accTr = findPrevAccRow(element.parentElement.parentElement);
                 let offerTr = findPrevOfferRow(element.parentElement.parentElement);
-                if (offerTr) {
+
+                if (offerTr && accTr) {
+                    decreaseRawspanAccName(accTr);
+                    decreaseRawspanOfferName(offerTr);
+                    decreaseRawspanDeviceAdd(offerTr);
+                    decreaseRawspanOffer(accTr);
+                    decreaseRawspanLead(accTr);
+                    decreaseRawspanOfferAdd(accTr);
+                } else if (offerTr) {
                     decreaseRawspanAccName(mainTr);
                     decreaseRawspanOfferName(offerTr);
                     decreaseRawspanDeviceAdd(offerTr);
@@ -359,7 +373,7 @@
                     decreaseRawspanLead(mainTr);
                     decreaseRawspanOfferAdd(mainTr);
 
-
+                    var offerElement = mainTr.querySelector('.offer');
                 } else if (accTr) {
                     decreaseRawspanAccName(accTr);
                     decreaseRawspanOfferName(accTr);
@@ -368,6 +382,8 @@
                     decreaseRawspanLead(accTr);
                     decreaseRawspanOfferAdd(accTr);
 
+                    var offerElement = accTr.querySelector('.offer');
+
                 } else {
                     decreaseRawspanAccName(mainTr);
                     decreaseRawspanOfferName(mainTr);
@@ -375,6 +391,8 @@
                     decreaseRawspanOffer(mainTr);
                     decreaseRawspanLead(mainTr);
                     decreaseRawspanOfferAdd(mainTr);
+
+                    var offerElement = mainTr.querySelector('.offer');
                 }
 
                 decreaseRawspanSlNo(mainTr);
@@ -382,6 +400,15 @@
                 decreaseRawspanAccAdd(mainTr);
                 decreaseRawspanUserAdd(mainTr);
                 element.parentElement.parentElement.remove();
+
+
+                // var offerElement = tr.querySelector('.offer');
+
+
+                var offerValue = offerElement.dataset.offer;
+                var newOfferValue = parseInt(offerValue) - 1;
+                offerElement.dataset.offer = newOfferValue;
+                offerElement.innerHTML = newOfferValue;
             }
         }
 
