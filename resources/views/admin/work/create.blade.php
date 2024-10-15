@@ -395,29 +395,42 @@
                 if (accTr) {
                     decreaseRawspanAccName(accTr);
                     decreaseRawspanOffer(accTr);
+                    decreaseRawspanLead(accTr);
                     decreaseRawspanOfferAdd(accTr);
-
-                    var offerValue = accTr.querySelector('.add_offer').dataset.offer;
-                    var newOfferValue = parseInt(offerValue) - 1;
-
-                    accTr.querySelector('.add_offer').dataset.offer = newOfferValue;
-                    accTr.querySelector('.offer').innerHTML = newOfferValue;
                 } else {
                     decreaseRawspanAccName(mainTr);
                     decreaseRawspanOffer(mainTr);
+                    decreaseRawspanLead(mainTr);
                     decreaseRawspanOfferAdd(mainTr);
-
-                    var offerValue = mainTr.querySelector('.add_offer').dataset.offer;
-                    var newOfferValue = parseInt(offerValue) - 1;
-
-                    mainTr.querySelector('.add_offer').dataset.offer = newOfferValue;
-                    mainTr.querySelector('.offer').innerHTML = newOfferValue;
                 }
 
                 decreaseRawspanSlNo(mainTr);
                 decreaseRawspanUsername(mainTr);
                 decreaseRawspanAccAdd(mainTr);
                 decreaseRawspanUserAdd(mainTr);
+
+                let deviceTrs = getNextDeviceTrs(element.parentElement.parentElement);
+                console.log(deviceTrs);
+
+                deviceTrs.forEach(trs => {
+                    if (accTr) {
+                        decreaseRawspanAccName(accTr);
+                        decreaseRawspanOffer(accTr);
+                        decreaseRawspanLead(accTr);
+                        decreaseRawspanOfferAdd(accTr);
+                    } else {
+                        decreaseRawspanAccName(mainTr);
+                        decreaseRawspanOffer(mainTr);
+                        decreaseRawspanLead(mainTr);
+                        decreaseRawspanOfferAdd(mainTr);
+                    }
+                    decreaseRawspanSlNo(mainTr);
+                    decreaseRawspanUsername(mainTr);
+                    decreaseRawspanAccAdd(mainTr);
+                    decreaseRawspanUserAdd(mainTr);
+
+                    trs.remove();
+                });
 
                 element.parentElement.parentElement.remove();
 
@@ -433,7 +446,7 @@
                 decreaseRawspanAccAdd(mainTr);
                 decreaseRawspanUserAdd(mainTr);
 
-                let offerTrs = getNextOfferTrs(element.parentElement.parentElement);
+                let offerTrs = getNextOfferTrsOrDeviceTrs(element.parentElement.parentElement);
 
                 offerTrs.forEach(trs => {
                     trs.remove();
@@ -450,7 +463,7 @@
         function deleteUser(element) {
             if (confirm('Delete user?')) {
 
-                let offerTrsAndAccTrs = getNextOfferTrsOrAccTrs(element.parentElement.parentElement);
+                let offerTrsAndAccTrs = getNextAccTrsOfferTrsOrDeviceTrs(element.parentElement.parentElement);
                 offerTrsAndAccTrs.forEach(trs => {
                     trs.remove();
                     document.querySelector('.user_add').rowSpan--;
@@ -484,12 +497,23 @@
             return nextTr;
         }
 
+        // Getting Next Device table rows
+        function getNextDeviceTrs(currentTr) {
+            let nextTr = currentTr.nextElementSibling;
+            trs = [];
+            while (nextTr && nextTr.classList.contains('deviceTr')) {
+                trs.push(nextTr);
+                nextTr = nextTr.nextElementSibling;
+            }
+            return trs;
+        }
+
         // Getting Next offer table rows
-        function getNextOfferTrs(currentTr) {
+        function getNextOfferTrsOrDeviceTrs(currentTr) {
             let nextTr = currentTr.nextElementSibling;
 
             trs = [];
-            while (nextTr && nextTr.classList.contains('offerTr')) {
+            while (nextTr && (nextTr.classList.contains('offerTr') || nextTr.classList.contains('deviceTr'))) {
                 trs.push(nextTr);
                 nextTr = nextTr.nextElementSibling;
             }
@@ -498,11 +522,12 @@
         }
 
         // Getting Next table rows that contains offerTr or accountTr.
-        function getNextOfferTrsOrAccTrs(currentTr) {
+        function getNextAccTrsOfferTrsOrDeviceTrs(currentTr) {
             let nextTr = currentTr.nextElementSibling;
 
             trs = [];
-            while (nextTr && (nextTr.classList.contains('offerTr') || nextTr.classList.contains('accountTr'))) {
+            while (nextTr && (nextTr.classList.contains('offerTr') || nextTr.classList.contains('accountTr') || nextTr
+                    .classList.contains('deviceTr'))) {
                 trs.push(nextTr);
                 nextTr = nextTr.nextElementSibling;
             }
