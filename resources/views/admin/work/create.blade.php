@@ -64,7 +64,13 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="device_name">Samsung</td>
+                                        <td class="device_name">
+                                            <select name="device_name" class="form-control">
+                                                @foreach ($devices as $device)
+                                                    <option value="{{ $device->id }}">{{ $device->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
                                         <td class="device_add"><span class="btn btn-sm add_device"
                                                 style="background-color: pink;" onclick="addDevice(this)">Add
                                                 Device</span></td>
@@ -98,7 +104,13 @@
             let tr = element.parentElement.parentElement;
             let deviceTr = `
                 <tr class="deviceTr">
-                    <td class="device_name">Samsung</td>
+                    <td class="device_name">
+                        <select name="device_name" class="form-control">
+                            @foreach ($devices as $device)
+                                <option value="{{ $device->id }}">{{ $device->name }}</option>
+                            @endforeach
+                        </select>    
+                    </td>
                 </tr>
             `;
 
@@ -162,7 +174,13 @@
                             @endforeach
                         </select>    
                     </td>
-                    <td class="device_name">Samsung</td>
+                    <td class="device_name">
+                        <select name="device_name" class="form-control">
+                            @foreach ($devices as $device)
+                                <option value="{{ $device->id }}">{{ $device->name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span><span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
                 </tr>
             `;
@@ -178,6 +196,8 @@
             if (insertAfterTr) {
                 if (insertAfterTr.classList.contains('main_row')) {
                     insertAfterTr.insertAdjacentHTML('beforebegin', offerTr);
+                } else if (insertAfterTr.classList.contains('accountTr')) {
+                    insertAfterTr.insertAdjacentHTML('beforebegin', offerTr)
                 } else {
                     insertAfterTr.insertAdjacentHTML('afterend', offerTr);
                 }
@@ -225,7 +245,13 @@
                             @endforeach
                         </select>     
                     </td>
-                    <td class="device_name">Samsung</td>
+                    <td class="device_name">
+                        <select name="device_name" class="form-control">
+                            @foreach ($devices as $device)
+                                <option value="{{ $device->id }}">{{ $device->name }}</option>
+                            @endforeach
+                        </select>    
+                    </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer">1</td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
@@ -278,7 +304,13 @@
                             @endforeach
                         </select> 
                     </td>
-                    <td class="device_name">Samsung</td>
+                    <td class="device_name">
+                        <select name="device_name" class="form-control">
+                            @foreach ($devices as $device)
+                                <option value="{{ $device->id }}">{{ $device->name }}</option>
+                            @endforeach
+                        </select>    
+                    </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer">1</td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)" data-offer="1">Add Offer</span></td>
@@ -371,11 +403,11 @@
         function findNextNonDeviceTr(currentTr) {
             let nextTr = currentTr.nextElementSibling;
 
-            while (nextTr && nextTr.classList.contains('deviceTr')) {
+            while (nextTr && (nextTr.classList.contains('deviceTr') || nextTr.classList.contains('offerTr'))) {
 
                 nextTr = nextTr.nextElementSibling;
             }
-            console.log(nextTr);
+
             return nextTr;
         }
 

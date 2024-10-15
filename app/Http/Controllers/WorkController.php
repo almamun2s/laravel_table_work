@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Work;
@@ -42,7 +43,8 @@ class WorkController extends Controller
         $users = User::latest()->get();
         $accounts = Account::latest()->get();
         $offers = Offer::latest()->get();
-        return view('admin.work.create', compact('users', 'accounts', 'offers', 'date'));
+        $devices = Device::latest()->get();
+        return view('admin.work.create', compact('users', 'accounts', 'offers', 'date', 'devices'));
     }
 
     /**
