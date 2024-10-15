@@ -345,12 +345,47 @@
             element.parentElement.rowSpan = element.parentElement.rowSpan + 1;
         }
 
-        // Deleting Device
+        // =================================== Deleting Device ===================================
         function deleteDevice(element) {
+            if (confirm('Do you want to delete this?')) {
+                let mainTr = findPrevMainRow(element.parentElement.parentElement);
+                let accTr = findPrevAccRow(element.parentElement.parentElement);
+                let offerTr = findPrevOfferRow(element.parentElement.parentElement);
+                if (offerTr) {
+                    decreaseRawspanAccName(mainTr);
+                    decreaseRawspanOfferName(offerTr);
+                    decreaseRawspanDeviceAdd(offerTr);
+                    decreaseRawspanOffer(mainTr);
+                    decreaseRawspanLead(mainTr);
+                    decreaseRawspanOfferAdd(mainTr);
 
+
+                } else if (accTr) {
+                    decreaseRawspanAccName(accTr);
+                    decreaseRawspanOfferName(accTr);
+                    decreaseRawspanDeviceAdd(accTr);
+                    decreaseRawspanOffer(accTr);
+                    decreaseRawspanLead(accTr);
+                    decreaseRawspanOfferAdd(accTr);
+
+                } else {
+                    decreaseRawspanAccName(mainTr);
+                    decreaseRawspanOfferName(mainTr);
+                    decreaseRawspanDeviceAdd(mainTr);
+                    decreaseRawspanOffer(mainTr);
+                    decreaseRawspanLead(mainTr);
+                    decreaseRawspanOfferAdd(mainTr);
+                }
+
+                decreaseRawspanSlNo(mainTr);
+                decreaseRawspanUsername(mainTr);
+                decreaseRawspanAccAdd(mainTr);
+                decreaseRawspanUserAdd(mainTr);
+                element.parentElement.parentElement.remove();
+            }
         }
 
-        // Deleting Offer
+        // =================================== Deleting Offer ===================================
         function deleteOffer(element) {
             if (confirm('Do you sure want to delete this?')) {
 
@@ -389,7 +424,7 @@
             }
         }
 
-        // Deleting Account
+        // =================================== Deleting Account ===================================
         function deleteAccount(element) {
             if (confirm('Delete this Account?')) {
                 let mainTr = findPrevMainRow(element.parentElement.parentElement);
@@ -411,7 +446,7 @@
             }
         }
 
-        // Deleting User
+        // =================================== Deleting User ===================================
         function deleteUser(element) {
             if (confirm('Delete user?')) {
 
@@ -473,6 +508,18 @@
             }
 
             return trs;
+        }
+
+        function findPrevOfferRow(currentTr) {
+            let previousTr = currentTr.previousElementSibling;
+
+            while (previousTr && !previousTr.classList.contains('offerTr')) {
+                if (previousTr.classList.contains('main_row') || previousTr.classList.contains('accountTr')) {
+                    return false;
+                }
+                previousTr = previousTr.previousElementSibling;
+            }
+            return previousTr;
         }
 
         // Finding previous Main row
@@ -576,10 +623,28 @@
             account_name.rowSpan--;
         }
 
+        // Functions for Decreasing rowspan for Offer Name
+        function decreaseRawspanOfferName(element) {
+            let offer_name = element.querySelector('.offer_name');
+            offer_name.rowSpan--;
+        }
+
+        // Functions for Decreasing rowspan for device add
+        function decreaseRawspanDeviceAdd(element) {
+            let device_add = element.querySelector('.device_add');
+            device_add.rowSpan--;
+        }
+
         // Functions for Decreasing rowspan for Offer
         function decreaseRawspanOffer(element) {
             let offer = element.querySelector('.offer');
             offer.rowSpan--;
+        }
+
+        // Functions for increasing rowspan for Lead
+        function decreaseRawspanLead(element) {
+            let lead = element.querySelector('.lead');
+            lead.rowSpan--;
         }
 
         // Functions for Decreasing rowspan for Add Offer
