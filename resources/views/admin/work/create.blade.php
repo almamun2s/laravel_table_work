@@ -35,6 +35,7 @@
                                         <th>Device Name</th>
                                         <th>Device Add</th>
                                         <th>Offers</th>
+                                        <th>Lead</th>
                                         <th>Offer Add</th>
                                         <th>Account Add</th>
                                         <th>User Add</th>
@@ -75,6 +76,9 @@
                                                 style="background-color: pink;" onclick="addDevice(this)">Add
                                                 Device</span></td>
                                         <td class="offer" data-offer="1">1</td>
+                                        <td class="lead">
+                                            <input class="form-control" type="number" min="0">
+                                        </td>
                                         <td class="offer_add"><span class="btn btn-primary btn-sm add_offer"
                                                 onclick="addOffer(this)">Add
                                                 Offer</span></td>
@@ -125,12 +129,14 @@
                 if (accRow) {
                     increaseRawspanAccName(accRow);
                     increaseRawspanOffer(accRow);
+                    increaseRawspanLead(accRow);
                     increaseRawspanOfferAdd(accRow);
 
                     var offerElement = accRow.querySelector('.offer');
                 } else {
                     increaseRawspanAccName(mainRow);
                     increaseRawspanOffer(mainRow);
+                    increaseRawspanLead(mainRow);
                     increaseRawspanOfferAdd(mainRow);
 
                     var offerElement = mainRow.querySelector('.offer');
@@ -147,6 +153,7 @@
                 increaseRawspanUsername(mainRow);
                 increaseRawspanAccName(tr);
                 increaseRawspanOffer(tr);
+                increaseRawspanLead(tr);
                 increaseRawspanOfferAdd(tr);
                 increaseRawspanAccAdd(mainRow);
                 increaseRawspanUserAdd(mainRow);
@@ -157,6 +164,7 @@
                 increaseRawspanUsername(tr);
                 increaseRawspanAccName(tr);
                 increaseRawspanOffer(tr);
+                increaseRawspanLead(tr);
                 increaseRawspanOfferAdd(tr);
                 increaseRawspanAccAdd(tr);
                 increaseRawspanUserAdd(tr);
@@ -214,6 +222,7 @@
             if (tr.classList.contains('accountTr')) {
                 increaseRawspanAccName(tr);
                 increaseRawspanOffer(tr);
+                increaseRawspanLead(tr);
                 increaseRawspanOfferAdd(tr);
 
                 let mainRow = findPrevMainRow(tr);
@@ -227,6 +236,7 @@
                 increaseRawspanUsername(tr);
                 increaseRawspanAccName(tr);
                 increaseRawspanOffer(tr);
+                increaseRawspanLead(tr);
                 increaseRawspanOfferAdd(tr);
                 increaseRawspanAccAdd(tr);
                 increaseRawspanUserAdd(tr);
@@ -260,6 +270,9 @@
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
+                    <td class="lead">
+                        <input class="form-control" type="number" min="0">
+                    </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
                 </tr>
             `;
@@ -319,6 +332,9 @@
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
+                    <td class="lead">
+                        <input class="form-control" type="number" min="0">
+                    </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span></td>
                     <td class="account_add"><span class="btn btn-secondary btn-sm" onclick="addAccount(this)">Add Account</span><span class="btn btn-danger btn-sm" onclick="deleteUser(this)"> Delete User</span></td>
                 </tr>
@@ -516,6 +532,12 @@
         function increaseRawspanOffer(element) {
             let offer = element.querySelector('.offer');
             offer.rowSpan++;
+        }
+
+        // Functions for increasing rowspan for Lead
+        function increaseRawspanLead(element) {
+            let lead = element.querySelector('.lead');
+            lead.rowSpan++;
         }
 
         // Functions for increasing rowspan for Add Offer
