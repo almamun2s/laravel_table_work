@@ -59,7 +59,7 @@
                                             </select>
                                         </td>
                                         <td class="offer_name">
-                                            <select name="offer_name" class="form-control">
+                                            <select name="offer_name" class="form-control" onchange="updateOffer(this)">
                                                 @foreach ($offers as $offer)
                                                     <option value="{{ $offer->id }}">{{ $offer->name }}</option>
                                                 @endforeach
@@ -110,7 +110,7 @@
             let deviceTr = `
                 <tr class="deviceTr">
                     <td class="device_name">
-                        <select name="device_name" class="form-control">
+                        <select name="device_name" class="form-control" onchange="updateDevice(this)">
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
@@ -189,14 +189,14 @@
             let offerTr = `
                 <tr class="offerTr">
                     <td class="offer_name">
-                        <select name="offer_name" class="form-control">
+                        <select name="offer_name" class="form-control" onchange="updateOffer(this)">
                             @foreach ($offers as $offer)
                                 <option value="{{ $offer->id }}">{{ $offer->name }}</option>
                             @endforeach
                         </select>    
                     </td>
                     <td class="device_name">
-                        <select name="device_name" class="form-control">
+                        <select name="device_name" class="form-control" onchange="updateDevice(this)">
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
@@ -263,14 +263,14 @@
                         </select>    
                     </td>
                     <td class="offer_name">
-                        <select name="offer_name" class="form-control">
+                        <select name="offer_name" class="form-control" onchange="updateOffer(this)">
                             @foreach ($offers as $offer)
                                 <option value="{{ $offer->id }}">{{ $offer->name }}</option>
                             @endforeach
                         </select>     
                     </td>
                     <td class="device_name">
-                        <select name="device_name" class="form-control">
+                        <select name="device_name" class="form-control" onchange="updateDevice(this)">
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
@@ -326,14 +326,14 @@
                         </select>    
                     </td>
                     <td class="offer_name">
-                        <select name="offer_name" class="form-control">
+                        <select name="offer_name" class="form-control" onchange="updateOffer(this)">
                             @foreach ($offers as $offer)
                                 <option value="{{ $offer->id }}">{{ $offer->name }}</option>
                             @endforeach
                         </select> 
                     </td>
                     <td class="device_name">
-                        <select name="device_name" class="form-control">
+                        <select name="device_name" class="form-control" onchange="updateDevice(this)">
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
@@ -621,6 +621,18 @@
             return previousTr;
         }
 
+        function getAllNextDeviceTrs(currentTr) {
+            let rows = [];
+            rows.push(currentTr);
+            let nextRow = currentTr.nextElementSibling;
+            
+            while (nextRow && nextRow.classList.contains('deviceTr')) {
+                rows.push(nextRow);
+                nextRow = nextRow.nextElementSibling;
+            }
+            return rows;
+        }
+
         // Functions for increasing rowspan for serial no
         function increaseRawspanSlNo(element) {
             let sl_no = element.querySelector('.sl_no');
@@ -743,9 +755,9 @@
 
         // =============================== Updating data =============================== 
         function updateDevice(element) {
-            deviceId = element.value;
+            let deviceId = element.value;
 
-            var hiddenInput = element.closest('td').querySelector('.works');
+            var hiddenInput = element.parentElement.querySelector('.works');
             if (hiddenInput.value && isJSONParseable(hiddenInput.value)) {
                 let prevData = JSON.parse(hiddenInput.value);
 
@@ -760,6 +772,29 @@
 
                 hiddenInput.value = JSON.stringify(hiddenInputValues);
             }
+        }
+
+        function updateOffer(element) {
+            let offerId = element.value;
+
+            var hiddenInputRows = getAllNextDeviceTrs(element.parentElement.parentElement);
+            hiddenInputRows.forEach(hiddenInputRow => {
+                let hiddenInput = hiddenInputRow.querySelector('.works');
+
+                if (hiddenInput.value && isJSONParseable(hiddenInput.value)) {
+                    let prevData = JSON.parse(hiddenInput.value);
+
+                    prevData.offer_id = offerId;
+
+                    prevData = JSON.stringify(prevData);
+                    hiddenInput.value = prevData;
+                }else{
+                    var hiddenInputValues = {
+                        'offer_id' : offerId
+                    }
+                    hiddenInput.value = JSON.stringify(hiddenInputValues);
+                }
+            });
         }
 
         function isJSONParseable(data) {
