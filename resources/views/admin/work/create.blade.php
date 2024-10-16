@@ -71,13 +71,14 @@
                                                     <option value="{{ $device->id }}">{{ $device->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <input type="hidden" name="works[]" class="works">
                                         </td>
                                         <td class="device_add"><span class="btn btn-sm add_device"
                                                 style="background-color: pink;" onclick="addDevice(this)">Add
                                                 Device</span></td>
                                         <td class="offer" data-offer="1">1</td>
                                         <td class="lead">
-                                            <input class="form-control" type="number" min="0">
+                                            <input class="form-control" type="number" min="0" value="1">
                                         </td>
                                         <td class="offer_add"><span class="btn btn-primary btn-sm add_offer"
                                                 onclick="addOffer(this)">Add
@@ -114,6 +115,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
+                        <input type="hidden" name="works[]" class="works">
                         <span class="btn btn-danger btn-sm" onclick="deleteDevice(this)">Delete Device</span>
                     </td>
                 </tr>
@@ -199,6 +201,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
+                        <input type="hidden" name="works[]" class="works">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span><span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
                 </tr>
@@ -271,12 +274,13 @@
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
-                        </select>    
+                        </select>
+                        <input type="hidden" name="works[]" class="works">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
                     <td class="lead">
-                        <input class="form-control" type="number" min="0">
+                        <input class="form-control" type="number" min="0" value="1">
                     </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
                 </tr>
@@ -333,12 +337,13 @@
                             @foreach ($devices as $device)
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
-                        </select>    
+                        </select>
+                        <input type="hidden" name="works[]" class="works">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
                     <td class="lead">
-                        <input class="form-control" type="number" min="0">
+                        <input class="form-control" type="number" min="0" value="1">
                     </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span></td>
                     <td class="account_add"><span class="btn btn-secondary btn-sm" onclick="addAccount(this)">Add Account</span><span class="btn btn-danger btn-sm" onclick="deleteUser(this)"> Delete User</span></td>

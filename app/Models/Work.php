@@ -24,4 +24,9 @@ class Work extends Model
     {
         return $this->belongsTo(Offer::class);
     }
+
+    public function device()
+    {
+        return $this->belongsTo(Device::class);
+    }
 }

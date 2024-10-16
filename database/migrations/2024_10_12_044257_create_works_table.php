@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('account_id')->constrained()->onDelete('cascade');
             $table->foreignId('offer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('device_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('lead')->nullable();
             $table->date('date');
             $table->timestamps();
         });
