@@ -52,7 +52,7 @@
                                             </select>
                                         </td>
                                         <td class="account_name">
-                                            <select name="account_name" class="form-control">
+                                            <select name="account_name" class="form-control" onchange="updateAccount(this)">
                                                 @foreach ($accounts as $account)
                                                     <option value="{{ $account->id }}">{{ $account->name }}</option>
                                                 @endforeach
@@ -78,7 +78,8 @@
                                                 Device</span></td>
                                         <td class="offer" data-offer="1">1</td>
                                         <td class="lead">
-                                            <input class="form-control" type="number" min="0" value="1">
+                                            <input class="form-control" type="number" min="0" value="1"
+                                                onchange="updateAccount(this)">
                                         </td>
                                         <td class="offer_add"><span class="btn btn-primary btn-sm add_offer"
                                                 onclick="addOffer(this)">Add
@@ -256,7 +257,7 @@
             let accountTr = `
                 <tr class="accountTr">
                     <td class="account_name">
-                        <select name="account_name" class="form-control">
+                        <select name="account_name" class="form-control" onchange="updateAccount(this)">
                             @foreach ($accounts as $account)
                                 <option value="{{ $account->id }}">{{ $account->name }}</option>
                             @endforeach
@@ -280,7 +281,7 @@
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
                     <td class="lead">
-                        <input class="form-control" type="number" min="0" value="1">
+                        <input class="form-control" type="number" min="0" value="1" onchange="updateAccount(this)">
                     </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span><span class="btn btn-danger btn-sm" onclick="deleteAccount(this)">Delete Account</span></td>
                 </tr>
@@ -319,7 +320,7 @@
                         </select>    
                     </td>
                     <td class="account_name">
-                        <select name="account_name" class="form-control">
+                        <select name="account_name" class="form-control" onchange="updateAccount(this)">
                             @foreach ($accounts as $account)
                                 <option value="{{ $account->id }}">{{ $account->name }}</option>
                             @endforeach
@@ -343,7 +344,7 @@
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
                     <td class="lead">
-                        <input class="form-control" type="number" min="0" value="1">
+                        <input class="form-control" type="number" min="0" value="1" onchange="updateAccount(this)">
                     </td>
                     <td class="offer_add"><span class="btn btn-primary btn-sm add_offer" onclick="addOffer(this)">Add Offer</span></td>
                     <td class="account_add"><span class="btn btn-secondary btn-sm" onclick="addAccount(this)">Add Account</span><span class="btn btn-danger btn-sm" onclick="deleteUser(this)"> Delete User</span></td>
@@ -621,15 +622,30 @@
             return previousTr;
         }
 
+        // Getting all next device Rows with the current Row
         function getAllNextDeviceTrs(currentTr) {
             let rows = [];
             rows.push(currentTr);
             let nextRow = currentTr.nextElementSibling;
-            
+
             while (nextRow && nextRow.classList.contains('deviceTr')) {
                 rows.push(nextRow);
                 nextRow = nextRow.nextElementSibling;
             }
+            return rows;
+        }
+
+        // Getting all next offer rows and device rows with the current Row
+        function getAllNextOfferTrAndDeviceTr(currentTr) {
+            let rows = [];
+            rows.push(currentTr);
+            let nextRow = currentTr.nextElementSibling;
+
+            while (nextRow && (nextRow.classList.contains('offerTr') || nextRow.classList.contains('deviceTr'))) {
+                rows.push(nextRow);
+                nextRow = nextRow.nextElementSibling;
+            }
+
             return rows;
         }
 
@@ -788,9 +804,36 @@
 
                     prevData = JSON.stringify(prevData);
                     hiddenInput.value = prevData;
-                }else{
+                } else {
                     var hiddenInputValues = {
-                        'offer_id' : offerId
+                        'offer_id': offerId
+                    }
+                    hiddenInput.value = JSON.stringify(hiddenInputValues);
+                }
+            });
+        }
+
+        function updateAccount(element) {
+            let tr = element.parentElement.parentElement;
+            let accountId = tr.querySelector('.account_name select').value;
+            let lead = tr.querySelector('.lead input').value;
+
+            let hiddenInputRows = getAllNextOfferTrAndDeviceTr(element.parentElement.parentElement);
+            hiddenInputRows.forEach(hiddenInputRow => {
+                let hiddenInput = hiddenInputRow.querySelector('.works');
+
+                if (hiddenInput.value && isJSONParseable(hiddenInput.value)) {
+                    let prevData = JSON.parse(hiddenInput.value);
+
+                    prevData.account_id = accountId;
+                    prevData.lead = lead;
+
+                    prevData = JSON.stringify(prevData);
+                    hiddenInput.value = prevData;
+                } else {
+                    var hiddenInputValues = {
+                        'account_id': accountId,
+                        'lead': lead,
                     }
                     hiddenInput.value = JSON.stringify(hiddenInputValues);
                 }
