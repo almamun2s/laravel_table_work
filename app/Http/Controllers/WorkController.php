@@ -25,7 +25,8 @@ class WorkController extends Controller
     /**
      * Selects a date for a work
      */
-    public function select_date(){
+    public function select_date()
+    {
         return view('admin.work.select_date');
     }
 
@@ -52,15 +53,18 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'date' => 'required',
-        ]);
-        Work::create([
-            'user_id'    => $request->user_id,
-            'account_id' => $request->account_id,
-            'offer_id'   => $request->offer_id,
-            'date'       => $request->date,
-        ]);
+        foreach ($request->works as $work) {
+            $work = json_decode($work);
+
+            Work::create([
+                    'user_id'    => $work->user_id,
+                    'account_id' => $work->account_id,
+                    'offer_id'   => $work->offer_id,
+                    'device_id'  => $work->device_id,
+                    'lead'       => $work->lead,
+                    'date'       => $request->date,
+            ]);
+        }
 
         return redirect()->route('work');
     }

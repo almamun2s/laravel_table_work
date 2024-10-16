@@ -20,6 +20,8 @@
                                 <th>User Name</th>
                                 <th>Account Name</th>
                                 <th>Offer Name</th>
+                                <th>Device Name</th>
+                                <th>Lead</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -33,6 +35,8 @@
                                     <td>{{ $work->user->name }}</td>
                                     <td>{{ $work->account->name }}</td>
                                     <td>{{ $work->offer->name }}</td>
+                                    <td>{{ $work->device->name }}</td>
+                                    <td>{{ $work->lead }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning">Edit</a>
                                         <a href="#" class="btn btn-danger">Delete</a>
