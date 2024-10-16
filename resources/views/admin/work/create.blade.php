@@ -121,7 +121,6 @@
 
             tr.insertAdjacentHTML('afterend', deviceTr);
 
-
             if (tr.classList.contains('offerTr')) {
                 let mainRow = findPrevMainRow(tr);
                 let accRow = findPrevAccRow(tr);
@@ -401,10 +400,6 @@
                 decreaseRawspanUserAdd(mainTr);
                 element.parentElement.parentElement.remove();
 
-
-                // var offerElement = tr.querySelector('.offer');
-
-
                 var offerValue = offerElement.dataset.offer;
                 var newOfferValue = parseInt(offerValue) - 1;
                 offerElement.dataset.offer = newOfferValue;
@@ -418,17 +413,28 @@
 
                 let mainTr = findPrevMainRow(element.parentElement.parentElement);
                 let accTr = findPrevAccRow(element.parentElement.parentElement);
+                let offerElementMain;
 
                 if (accTr) {
                     decreaseRawspanAccName(accTr);
                     decreaseRawspanOffer(accTr);
                     decreaseRawspanLead(accTr);
                     decreaseRawspanOfferAdd(accTr);
+
+                    offerElementMain = accTr.querySelector('.offer');
                 } else {
                     decreaseRawspanAccName(mainTr);
                     decreaseRawspanOffer(mainTr);
                     decreaseRawspanLead(mainTr);
                     decreaseRawspanOfferAdd(mainTr);
+
+                    offerElementMain = mainTr.querySelector('.offer');
+                }
+                if (offerElementMain) {
+                    var offerValue = parseInt(offerElementMain.dataset.offer) || 0;
+                    var newOfferValue = offerValue - 1;
+                    offerElementMain.dataset.offer = newOfferValue;
+                    offerElementMain.innerHTML = newOfferValue;
                 }
 
                 decreaseRawspanSlNo(mainTr);
@@ -437,26 +443,39 @@
                 decreaseRawspanUserAdd(mainTr);
 
                 let deviceTrs = getNextDeviceTrs(element.parentElement.parentElement);
-                console.log(deviceTrs);
 
                 deviceTrs.forEach(trs => {
+                    let offerElement;
+
                     if (accTr) {
                         decreaseRawspanAccName(accTr);
                         decreaseRawspanOffer(accTr);
                         decreaseRawspanLead(accTr);
                         decreaseRawspanOfferAdd(accTr);
+
+                        offerElement = accTr.querySelector('.offer');
                     } else {
                         decreaseRawspanAccName(mainTr);
                         decreaseRawspanOffer(mainTr);
                         decreaseRawspanLead(mainTr);
                         decreaseRawspanOfferAdd(mainTr);
+
+                        offerElement = mainTr.querySelector('.offer');
                     }
+
                     decreaseRawspanSlNo(mainTr);
                     decreaseRawspanUsername(mainTr);
                     decreaseRawspanAccAdd(mainTr);
                     decreaseRawspanUserAdd(mainTr);
 
                     trs.remove();
+
+                    if (offerElement) {
+                        var offerValue = parseInt(offerElement.dataset.offer) || 0;
+                        var newOfferValue = offerValue - 1;
+                        offerElement.dataset.offer = newOfferValue;
+                        offerElement.innerHTML = newOfferValue;
+                    }
                 });
 
                 element.parentElement.parentElement.remove();
