@@ -45,7 +45,7 @@
                                     <tr class="main_row first_row">
                                         <td class="sl_no">1</td>
                                         <td class="user_name">
-                                            <select name="user_name" class="form-control">
+                                            <select name="user_name" class="form-control" onchange="updateUser(this)">
                                                 @foreach ($users as $user)
                                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                                 @endforeach
@@ -313,7 +313,7 @@
                 <tr class="main_row">
                     <td class="sl_no">${serialNo}</td>
                     <td class="user_name">
-                        <select name="user_name" class="form-control">
+                        <select name="user_name" class="form-control" onchange="updateUser(this)">
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
@@ -649,6 +649,21 @@
             return rows;
         }
 
+        // Getting all next account, offer and device rows with the current Row
+        function getAllNextAccountOfferAndDeviceTr(currentTr) {
+            let rows = [];
+            rows.push(currentTr);
+            let nextRow = currentTr.nextElementSibling;
+
+            while (nextRow && (nextRow.classList.contains('accountTr') || nextRow.classList.contains('offerTr') || nextRow
+                    .classList.contains('deviceTr'))) {
+                rows.push(nextRow);
+                nextRow = nextRow.nextElementSibling;
+            }
+
+            return rows;
+        }
+
         // Functions for increasing rowspan for serial no
         function increaseRawspanSlNo(element) {
             let sl_no = element.querySelector('.sl_no');
@@ -838,6 +853,29 @@
                     hiddenInput.value = JSON.stringify(hiddenInputValues);
                 }
             });
+        }
+
+        function updateUser(element) {
+            let userId = element.value;
+
+            let hiddenInputRows = getAllNextAccountOfferAndDeviceTr(element.parentElement.parentElement);
+            hiddenInputRows.forEach(hiddenInputRow => {
+                let hiddenInput = hiddenInputRow.querySelector('.works');
+
+                if (hiddenInput.value && isJSONParseable(hiddenInput.value)) {
+                    let prevData = JSON.parse(hiddenInput.value);
+
+                    prevData.user_id = userId;
+
+                    prevData = JSON.stringify(prevData);
+                    hiddenInput.value = prevData;
+                }else{
+                    var hiddenInputValues = {
+                        'user_id': userId
+                    }
+                    hiddenInput.value = JSON.stringify(hiddenInputValues);
+                }
+            })
         }
 
         function isJSONParseable(data) {
