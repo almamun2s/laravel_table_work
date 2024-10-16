@@ -19,9 +19,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        \App\Models\Account::factory(10)->create();
-        \App\Models\Offer::factory(10)->create();
-        \App\Models\Phone::factory(10)->create();
-        \App\Models\Device::factory(10)->create();
+        // Account creation
+        \App\Models\Market::factory(8)->create();
+        // Offer creation
+        \App\Models\OfferName::factory(8)->create();
+        // Device creation
+        \App\Models\CompanyName::factory(8)->create();
+        
     }
 }

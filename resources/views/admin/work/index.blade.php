@@ -33,9 +33,9 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $work->date }}</td>
                                     <td>{{ $work->user->name }}</td>
-                                    <td>{{ $work->account->name }}</td>
-                                    <td>{{ $work->offer->name }}</td>
-                                    <td>{{ $work->device->name }}</td>
+                                    <td>{{ $work->market->name }}</td>
+                                    <td>{{ $work->offer_name->name }}</td>
+                                    <td>{{ $work->company_name->name }}</td>
                                     <td>{{ $work->lead }}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning">Edit</a>
@@ -43,17 +43,6 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {{-- <tr>
-                                <td>1</td>
-                                <td>Date</td>
-                                <td>User</td>
-                                <td>Account</td>
-                                <td>Offer</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning">Edit</a>
-                                    <a href="#" class="btn btn-danger">Delete</a>
-                                </td>
-                            </tr> --}}
                         </tbody>
                     </table>
 

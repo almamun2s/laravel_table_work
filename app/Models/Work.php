@@ -15,18 +15,19 @@ class Work extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function account()
+    public function market()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Market::class);
     }
 
-    public function offer()
+    public function offer_name()
     {
-        return $this->belongsTo(Offer::class);
+        return $this->belongsTo(OfferName::class);
     }
 
-    public function device()
+    // The company name is basically device. But other developer has made it as CompanyName. 
+    public function company_name()
     {
-        return $this->belongsTo(Device::class);
+        return $this->belongsTo(CompanyName::class);
     }
 }

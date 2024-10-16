@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Device;
-use Carbon\Carbon;
+use App\Models\CompanyName;
+use App\Models\Market;
+use App\Models\OfferName;
 use App\Models\User;
 use App\Models\Work;
-use App\Models\Offer;
-use App\Models\Account;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
@@ -41,10 +40,10 @@ class WorkController extends Controller
         $date = $request->date;
 
 
-        $users = User::latest()->get();
-        $accounts = Account::latest()->get();
-        $offers = Offer::latest()->get();
-        $devices = Device::latest()->get();
+        $users    = User::latest()->get();
+        $accounts = Market::latest()->get();
+        $offers   = OfferName::latest()->get();
+        $devices  = CompanyName::latest()->get();
         return view('admin.work.create', compact('users', 'accounts', 'offers', 'date', 'devices'));
     }
 
@@ -57,12 +56,12 @@ class WorkController extends Controller
             $work = json_decode($work);
 
             Work::create([
-                    'user_id'    => $work->user_id,
-                    'account_id' => $work->account_id,
-                    'offer_id'   => $work->offer_id,
-                    'device_id'  => $work->device_id,
-                    'lead'       => $work->lead,
-                    'date'       => $request->date,
+                    'user_id'         => $work->user_id,
+                    'market_id'       => $work->account_id,
+                    'offer_name_id'   => $work->offer_id,
+                    'company_name_id' => $work->device_id,
+                    'lead'            => $work->lead,
+                    'date'            => $request->date,
             ]);
         }
 
