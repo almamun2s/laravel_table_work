@@ -21,6 +21,16 @@
                             text-align: center;
                         }
                     </style>
+                    @php
+                        $deviceArr = [
+                            'device_id' => $devices->first()->id,
+                            'offer_id' => $offers->first()->id,
+                            'account_id' => $accounts->first()->id,
+                            'lead' => 1,
+                            'user_id' => $users->first()->id,
+                        ];
+                        $deviceArr = json_encode($deviceArr);
+                    @endphp
                     <form action="{{ route('work.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="date" value="{{ $date }}">
@@ -71,7 +81,8 @@
                                                     <option value="{{ $device->id }}">{{ $device->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <input type="hidden" name="works[]" class="works">
+                                            <input type="hidden" name="works[]" class="works"
+                                                value="{{ $deviceArr }}">
                                         </td>
                                         <td class="device_add"><span class="btn btn-sm add_device"
                                                 style="background-color: pink;" onclick="addDevice(this)">Add
@@ -116,7 +127,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
-                        <input type="hidden" name="works[]" class="works">
+                        <input type="hidden" name="works[]" class="works" value="{{ $deviceArr }}">
                         <span class="btn btn-danger btn-sm" onclick="deleteDevice(this)">Delete Device</span>
                     </td>
                 </tr>
@@ -202,7 +213,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
-                        <input type="hidden" name="works[]" class="works">
+                        <input type="hidden" name="works[]" class="works" value="{{ $deviceArr }}">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span><span class="btn btn-danger btn-sm" onclick="deleteOffer(this)">Delete Offer</span></td>
                 </tr>
@@ -276,7 +287,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
-                        <input type="hidden" name="works[]" class="works">
+                        <input type="hidden" name="works[]" class="works" value="{{ $deviceArr }}">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
@@ -339,7 +350,7 @@
                                 <option value="{{ $device->id }}">{{ $device->name }}</option>
                             @endforeach
                         </select>
-                        <input type="hidden" name="works[]" class="works">
+                        <input type="hidden" name="works[]" class="works" value="{{ $deviceArr }}">
                     </td>
                     <td class="device_add"><span class="btn btn-sm add_device" style="background-color: pink;" onclick="addDevice(this)">Add Device</span></td>
                     <td class="offer" data-offer="1">1</td>
@@ -869,7 +880,7 @@
 
                     prevData = JSON.stringify(prevData);
                     hiddenInput.value = prevData;
-                }else{
+                } else {
                     var hiddenInputValues = {
                         'user_id': userId
                     }
