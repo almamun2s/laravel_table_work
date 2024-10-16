@@ -66,7 +66,7 @@
                                             </select>
                                         </td>
                                         <td class="device_name">
-                                            <select name="device_name" class="form-control">
+                                            <select name="device_name" class="form-control" onchange="updateDevice(this)">
                                                 @foreach ($devices as $device)
                                                     <option value="{{ $device->id }}">{{ $device->name }}</option>
                                                 @endforeach
@@ -739,6 +739,36 @@
         function decreaseRawspanUserAdd(element) {
             let user_add = document.querySelector('.user_add');
             user_add.rowSpan--;
+        }
+
+        // =============================== Updating data =============================== 
+        function updateDevice(element) {
+            deviceId = element.value;
+
+            var hiddenInput = element.closest('td').querySelector('.works');
+            if (hiddenInput.value && isJSONParseable(hiddenInput.value)) {
+                let prevData = JSON.parse(hiddenInput.value);
+
+                prevData.device_id = deviceId;
+
+                prevData = JSON.stringify(prevData);
+                hiddenInput.value = prevData;
+            } else {
+                var hiddenInputValues = {
+                    'device_id': deviceId
+                };
+
+                hiddenInput.value = JSON.stringify(hiddenInputValues);
+            }
+        }
+
+        function isJSONParseable(data) {
+            try {
+                JSON.parse(data);
+                return true;
+            } catch (error) {
+                return false;
+            }
         }
     </script>
 @endsection
