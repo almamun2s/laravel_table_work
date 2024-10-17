@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('company_name_id')->constrained()->onDelete('cascade');
             $table->bigInteger('lead')->nullable();
             $table->date('date');
+            $table->dateTime('completed_at')->nullable();
             $table->timestamps();
         });
     }

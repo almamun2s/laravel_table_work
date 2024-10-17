@@ -30,12 +30,14 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="{{ route('work') }}" class="waves-effect">
-                                    <i class="ri-dashboard-line"></i>
-                                    <span>Work</span>
-                                </a>
-                            </li>
+                            @if (auth()->user()->role == 1)
+                                <li>
+                                    <a href="{{ route('work') }}" class="waves-effect">
+                                        <i class="ri-dashboard-line"></i>
+                                        <span>Work</span>
+                                    </a>
+                                </li>
+                            @endif
 
 
                         </ul>

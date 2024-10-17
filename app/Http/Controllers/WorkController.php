@@ -7,6 +7,7 @@ use App\Models\Market;
 use App\Models\OfferName;
 use App\Models\User;
 use App\Models\Work;
+use Auth;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
@@ -16,8 +17,10 @@ class WorkController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role != 1) {
+            abort(404);
+        }
         $works = Work::latest()->get();
-        // dd($work);
         return view('admin.work.index', compact('works'));
     }
 
@@ -26,6 +29,9 @@ class WorkController extends Controller
      */
     public function select_date()
     {
+        if (Auth::user()->role != 1) {
+            abort(404);
+        }
         return view('admin.work.select_date');
     }
 
@@ -34,6 +40,9 @@ class WorkController extends Controller
      */
     public function create(Request $request)
     {
+        if (Auth::user()->role != 1) {
+            abort(404);
+        }
         if (empty($request->date)) {
             return redirect()->back()->withErrors(['error' => 'Please Select a date.']);
         }
@@ -52,6 +61,9 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::user()->role != 1) {
+            abort(404);
+        }
         foreach ($request->works as $work) {
             $work = json_decode($work);
 
@@ -60,7 +72,7 @@ class WorkController extends Controller
                     'market_id'       => $work->account_id,
                     'offer_name_id'   => $work->offer_id,
                     'company_name_id' => $work->device_id,
-                    'lead'            => $work->lead,
+                    'lead'            => (int) $work->lead,
                     'date'            => $request->date,
             ]);
         }
@@ -73,7 +85,7 @@ class WorkController extends Controller
      */
     public function show(string $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -81,7 +93,7 @@ class WorkController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -89,7 +101,7 @@ class WorkController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -97,6 +109,6 @@ class WorkController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        abort(404);
     }
 }
